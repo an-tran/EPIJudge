@@ -8,25 +8,17 @@ import java.util.List;
 public class IntAsArrayIncrement {
   @EpiTest(testDataFile = "int_as_array_increment.tsv")
   public static List<Integer> plusOne(List<Integer> A) {
-    // TODO - you fill in here.
-    Integer[] sum = new Integer[A.size() + 1];
-    int carry = 1;
-    for (int i = A.size() - 1; i >= 0; i--) {
-      int p = A.get(i) + carry;
-      if (p < 10) {
-        carry = 0;
-        sum[i+1] = p;
-      } else {
-        carry = 1;
-        sum[i+1] = 0;
-      }
+    int len = A.size() - 1;
+    A.set(len, A.get(len) +1);
+    for (int i = len; i > 0 && A.get(i) == 10 ; i--) {
+      A.set(i - 1, A.get(i -1) + 1);
+      A.set(i, 0);
     }
-    if (carry == 1) {
-      sum[0] = 1;
-      return Arrays.asList(sum);
-    } else {
-      return Arrays.asList(Arrays.copyOfRange(sum, 1, sum.length));
+    if (A.get(0) == 10) {
+      A.set(0, 0);
+      A.add(0, 1);
     }
+    return A;
   }
 
   public static void main(String[] args) {
