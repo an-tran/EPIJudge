@@ -11,8 +11,33 @@ public class DutchNationalFlag {
 
   public static void dutchFlagPartition(int pivotIndex, List<Color> A) {
     // TODO - you fill in here.
+    swap(A, 0, pivotIndex);
+    int left = 1;
+    int right = A.size() - 1;
+    int curr = left;
+    Color pv = A.get(0);
+    while (curr <= right) {
+      if (A.get(curr).ordinal() == pv.ordinal()) {
+        curr++;
+      } else if (A.get(curr).ordinal() < pv.ordinal()) {
+        swap(A, left, curr);
+        left++;
+        curr++;
+      } else if (A.get(curr).ordinal() > pv.ordinal()) {
+        swap(A, curr, right);
+        right--;
+      }
+    }
+    swap(A, 0 , left - 1);
     return;
   }
+
+  private static void swap(List<Color> A, int x, int y) {
+    Color tmp = A.get(x);
+    A.set(x, A.get(y));
+    A.set(y, tmp);
+  }
+
   @EpiTest(testDataFile = "dutch_national_flag.tsv")
   public static void dutchFlagPartitionWrapper(TimedExecutor executor,
                                                List<Integer> A, int pivotIdx)
