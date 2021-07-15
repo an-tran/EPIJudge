@@ -10,6 +10,14 @@ import java.util.List;
 public class OfflineSampling {
   public static void randomSampling(int k, List<Integer> A) {
     // TODO - you fill in here.
+    List<Integer> ret = new ArrayList<>();
+    int seed =  10007;
+    for (int i = 0; i < k; i++) {
+      int  idx = ((int) (Math.random() + 1) * seed * (A.size() + 1)) % A.size();
+      Integer t = A.get(i);
+      A.set(i, A.get(idx));
+      A.set(idx, t);
+    }
     return;
   }
   private static boolean randomSamplingRunner(TimedExecutor executor, int k,
