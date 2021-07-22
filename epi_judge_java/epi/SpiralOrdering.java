@@ -9,19 +9,16 @@ public class SpiralOrdering {
 
   public static List<Integer>
   matrixInSpiralOrder(List<List<Integer>> squareMatrix) {
-    int nr = squareMatrix.size();
-    int n = 0;
+    int size = squareMatrix.size();
     List<Integer> ret = new ArrayList<>();
-    int dirInx = 0;
-    int[][] direction = new int[][] { new int[] {0, 1}, new int[] {1, 0}, new int[]{0, -1}, new int[]{-1, 0} };
-    int i = 0, j = 0;
-    while (n < nr * nr ) {
+    int n = 0, dirInx = 0, i = 0, j = 0;
+    int[][] direction = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+    while (n < size ) {
       ret.add(squareMatrix.get(i).get(j));
       squareMatrix.get(i).set(j, 0);
-      int[] dir = direction[dirInx];
-      int ni = dir[0] + i;
-      int nj = dir[1] + j;
-      if ((dirInx == 3 && ni <= 0) || nj < 0 || ni >= nr || nj >= nr || squareMatrix.get(ni).get(nj) == 0) {
+      int ni = direction[dirInx][0] + i;
+      int nj = direction[dirInx][1] + j;
+      if (ni < 0 || nj < 0 || ni >= size || nj >= size || squareMatrix.get(ni).get(nj) == 0) {
         dirInx = (dirInx + 1) % 4;
       }
       i = direction[dirInx][0] + i;
