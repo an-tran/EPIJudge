@@ -11,7 +11,6 @@ public class IsValidSudoku {
 
   // Check if a partially filled matrix has any conflicts.
   public static boolean isValidSudoku(List<List<Integer>> partialAssignment) {
-    boolean[] set = new boolean[10];
     for (int i = 0; i < 9; i++) {
       if (hasDuplicate(partialAssignment, i, i, 0, 8)) {
         return false;
