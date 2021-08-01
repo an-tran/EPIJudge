@@ -9,18 +9,10 @@ public class SortedArrayRemoveDups {
   // Returns the number of valid entries after deletion.
   public static int deleteDuplicates(List<Integer> A) {
     if (A.size() == 0) return 0;
-    int swapIdx = 1, lastVal = A.get(0);
+    int swapIdx = 1;
     for (int i = 1; i < A.size(); i++) {
-      int val = A.get(i);
-      if (val == lastVal) {
-        A.set(i, 0);
-      } else {
-        if (swapIdx != i) {
-          Collections.swap(A, swapIdx, i);
-          A.set(i, 0);
-        }
-        swapIdx++;
-        lastVal = val;
+      if (A.get(i).compareTo(A.get(swapIdx - 1)) != 0) {
+        A.set(swapIdx++, A.get(i));
       }
     }
     return swapIdx;
