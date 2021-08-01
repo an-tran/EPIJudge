@@ -3,12 +3,27 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TimedExecutor;
 
+import java.util.Collections;
 import java.util.List;
 public class SortedArrayRemoveDups {
   // Returns the number of valid entries after deletion.
   public static int deleteDuplicates(List<Integer> A) {
-    // TODO - you fill in here.
-    return 0;
+    if (A.size() == 0) return 0;
+    int swapIdx = 1, lastVal = A.get(0);
+    for (int i = 1; i < A.size(); i++) {
+      int val = A.get(i);
+      if (val == lastVal) {
+        A.set(i, 0);
+      } else {
+        if (swapIdx != i) {
+          Collections.swap(A, swapIdx, i);
+          A.set(i, 0);
+        }
+        swapIdx++;
+        lastVal = val;
+      }
+    }
+    return swapIdx;
   }
   @EpiTest(testDataFile = "sorted_array_remove_dups.tsv")
   public static List<Integer> deleteDuplicatesWrapper(TimedExecutor executor,
