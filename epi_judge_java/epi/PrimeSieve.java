@@ -11,29 +11,18 @@ public class PrimeSieve {
   public static List<Integer> generatePrimes(int n) {
     // TODO - you fill in here.
     List<Integer> ret = new ArrayList<>();
-    boolean[] notPrime = new boolean[n+1];
-    Arrays.fill(notPrime, false);
+    boolean[] isPrime = new boolean[n+1];
+    Arrays.fill(isPrime, true);
     for (int i = 2; i < n + 1; i++) {
-      if (notPrime[i]) continue;
-
-      if (isPrime(i)) {
+      if (isPrime[i]) {
         ret.add(i);
-        int multiple = i ;
-        int c = 2;
-        while (multiple * c <= n) {
-          notPrime[multiple * c] = true;
-          c++;
+        for (int j = i + i; j <= n; j += i) {
+          isPrime[j] = false;
         }
       }
+
     }
     return ret;
-  }
-
-  private static boolean isPrime(int i) {
-    for (int j = 2; j <= Math.sqrt(i); j++) {
-      if (i % j == 0) return false;
-    }
-    return true;
   }
 
   public static void main(String[] args) {
