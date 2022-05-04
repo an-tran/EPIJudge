@@ -7,11 +7,24 @@ import java.util.Collections;
 import java.util.List;
 public class ApplyPermutation {
   public static void applyPermutation(List<Integer> perm, List<Integer> A) {
-    List<Integer> ret = new ArrayList<>(A);
-    for (int i = 0; i < A.size(); i++) {
-      A.set(perm.get(i), ret.get(i));
+    int nextIdx = 0;
+    int permIdx = -1;
+    int val = 0;
+    while (nextIdx < perm.size()) {
+      if (nextIdx == -1) {
+        nextIdx++;
+        continue;
+      }
+      permIdx = nextIdx;
+      while (perm.get(permIdx) != -1) {
+        int targetIdx = perm.get(permIdx);
+        Collections.swap(A, nextIdx, targetIdx);
+        perm.set(permIdx, -1); // mark the location at then permIdx is already applied
+        permIdx = targetIdx;
+      }
+      // update nextIdx
+      nextIdx++;
     }
-    return ;
   }
   @EpiTest(testDataFile = "apply_permutation.tsv")
   public static List<Integer> applyPermutationWrapper(List<Integer> perm,
