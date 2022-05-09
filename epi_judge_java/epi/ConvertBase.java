@@ -9,15 +9,13 @@ public class ConvertBase {
 
   public static String convertBase(String numAsString, int b1, int b2) {
     // Lesson: forget to test 'A01'
-    String digits = "0123456789ABCDF";
+    String digits = "0123456789ABCDEF";
     long numDecimal = 0;
     // Convert to decimal
     for (int i = numAsString.charAt(0) == '-' ? 1 : 0; i < numAsString.length(); i++) {
-      if (numAsString.charAt(i) < '0' || numAsString.charAt(i) > '9') {
-        numDecimal = numDecimal * b1 + (numAsString.charAt(i) - 'A' + 10);
-      } else {
-        numDecimal = numDecimal * b1 + (numAsString.charAt(i) - '0');
-      }
+      numDecimal = numDecimal * b1 + (Character.isDigit(numAsString.charAt(i)) ?
+                                        (numAsString.charAt(i) - '0') :
+                                        (numAsString.charAt(i) - 'A' + 10));
     }
 
     // convert to base b2
