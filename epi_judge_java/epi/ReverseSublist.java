@@ -24,7 +24,6 @@ public class ReverseSublist {
       subHead.next = tmp;
     }
 
-
     return dummyNode.next;
   }
 

@@ -3,10 +3,31 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+
+import java.util.HashMap;
+
 public class IsListCyclic {
 
   public static ListNode<Integer> hasCycle(ListNode<Integer> head) {
-    // TODO - you fill in here.
+    ListNode<Integer> slowIter = head;
+    ListNode<Integer> fastIter = head;
+
+    // find the index that start the cycle
+    HashMap<ListNode<Integer>, Boolean> nodeVisited = new HashMap<>();
+    while (fastIter.next != null && fastIter.next.next != null) {
+      nodeVisited.put(slowIter, true);
+      fastIter = fastIter.next.next;
+      slowIter = slowIter.next;
+
+      if (fastIter.equals(slowIter)) {
+        // Found cycle
+        while (!nodeVisited.containsKey(slowIter)) {
+          nodeVisited.put(slowIter, true);
+          slowIter = slowIter.next;
+        }
+        return slowIter;
+      }
+    }
     return null;
   }
   @EpiTest(testDataFile = "is_list_cyclic.tsv")
