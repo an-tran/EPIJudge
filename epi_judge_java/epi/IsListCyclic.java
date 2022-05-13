@@ -13,23 +13,22 @@ public class IsListCyclic {
     ListNode<Integer> fastIter = head;
 
     // find the index that start the cycle
-    HashMap<ListNode<Integer>, Boolean> nodeVisited = new HashMap<>();
     while (fastIter.next != null && fastIter.next.next != null) {
-      nodeVisited.put(slowIter, true);
       fastIter = fastIter.next.next;
       slowIter = slowIter.next;
 
       if (fastIter.equals(slowIter)) {
         // Found cycle
-        while (!nodeVisited.containsKey(slowIter)) {
-          nodeVisited.put(slowIter, true);
+        while (slowIter != head) {
           slowIter = slowIter.next;
+          head = head.next;
         }
         return slowIter;
       }
     }
     return null;
   }
+
   @EpiTest(testDataFile = "is_list_cyclic.tsv")
   public static void HasCycleWrapper(TimedExecutor executor,
                                      ListNode<Integer> head, int cycleIdx)
