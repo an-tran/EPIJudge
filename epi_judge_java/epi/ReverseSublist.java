@@ -8,30 +8,24 @@ public class ReverseSublist {
                                                  int finish) {
     if (L == null ) return L;
 
-    int p1Id = 1;
+    int headIdx = 1;
     ListNode<Integer> dummyNode = new ListNode<>(0, L);
-    ListNode<Integer> p1 = dummyNode.next;
-    ListNode<Integer> p2 = p1.next;
-    while (p1Id < finish && (p1 != null && p2 != null)) {
-      if (p1Id >= start) {
-        ListNode<Integer> tmp = p2.next;
-        p2.next = p1;
-        p1 = p2;
-        p2 = tmp;
-      } else {
-        if (p1Id == start - 1) {
-          dummyNode = p1;
-        }
-        p1 = p2;
-        p2 = p2.next;
-      }
-      p1Id++;
+    ListNode<Integer> subHead = dummyNode;
+    while (headIdx++ < start) {
+      subHead =subHead.next;
+    }
+    // headIdx = start
+
+    ListNode<Integer> iter = subHead.next;
+    while (start++ < finish) {
+      ListNode<Integer> tmp = iter.next;
+      iter.next = tmp.next;
+      tmp.next = subHead.next;
+      subHead.next = tmp;
     }
 
-    dummyNode.next.next = p2;
-    dummyNode.next = p1;
 
-    return start == 1 ? p1 : L;
+    return dummyNode.next;
   }
 
   public static void main(String[] args) {
