@@ -4,25 +4,38 @@ import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+
 public class StackWithMax {
 
   public static class Stack {
+    private Deque<Integer> stack = new LinkedList<>();
     public boolean empty() {
       // TODO - you fill in here.
-      return true;
+      return stack.isEmpty();
     }
     public Integer max() {
       // TODO - you fill in here.
-      return 0;
+      if (stack.isEmpty()) {
+        throw new IllegalStateException("Stack is empty");
+      }
+      Iterator<Integer> iter = stack.iterator();
+      Integer maxv = Integer.MIN_VALUE;
+      while (iter.hasNext()) {
+        maxv = Math.max(iter.next(), maxv);
+      }
+      return maxv;
     }
     public Integer pop() {
       // TODO - you fill in here.
-      return 0;
+      if (stack.isEmpty())
+        throw new IllegalStateException("Stack is empty");
+
+      return stack.pop();
     }
     public void push(Integer x) {
       // TODO - you fill in here.
+      stack.push(x);
       return;
     }
   }
