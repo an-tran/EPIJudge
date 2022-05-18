@@ -7,24 +7,76 @@ import epi.test_framework.TestFailure;
 import java.util.List;
 public class CircularQueue {
 
+
   public static class Queue {
-    public Queue(int capacity) {}
+    Integer[] queue;
+    int capacity;
+    int head = 0;
+    int tail = 0;
+    int _size = 0;
+    public Queue(int capacity) {
+      queue = new Integer[capacity];
+      this.capacity = capacity;
+    }
+
     public void enqueue(Integer x) {
-      // TODO - you fill in here.
+      // update tail
+      // increase queue capacity if needed
+      if (_size < capacity) {
+        queue[tail] = x;
+        tail = (tail + 1) % capacity;
+      } else {
+        Integer[] newqueue = new Integer[capacity * 2];
+        int copylen = Math.max(capacity, tail)  - head;
+        System.arraycopy(queue, head, newqueue, 0, copylen);
+        if (tail <= head) {
+          System.arraycopy(queue, 0, newqueue, copylen, tail);
+        }
+        queue = newqueue;
+        head = 0;
+        tail = capacity;
+        queue[tail] = x;
+        capacity = queue.length;
+        tail = (tail + 1) % capacity;
+      }
+      _size++;
+//      System.out.printf("Enque %d:  queue %s\n", x, toString());
       return;
     }
     public Integer dequeue() {
-      // TODO - you fill in here.
-      return 0;
+      // update head
+      if (size() == 0) {
+        throw new IllegalStateException("dequeue(): queue is empty");
+      }
+      Integer headval = queue[head];
+      head = (head + 1) % capacity;
+      _size--;
+
+//      System.out.printf("Deque %d:  queue %s\n", headval, toString());
+      return headval;
     }
+
     public int size() {
-      // TODO - you fill in here.
-      return 0;
+      return _size;
     }
+
     @Override
     public String toString() {
-      // TODO - you fill in here.
-      return super.toString();
+      StringBuilder sb = new StringBuilder("[");
+      for (int i = head; i < Math.max(capacity, tail); i++)
+      {
+        sb.append(queue[i]);
+        sb.append(" ");
+      }
+
+      if (tail <= head) {
+        for (int i = 0; i < tail; i++) {
+          sb.append(queue[i]);
+          sb.append(" ");
+        }
+      }
+
+      return sb.toString().trim() + "]";
     }
   }
   @EpiUserType(ctorParams = {String.class, int.class})
