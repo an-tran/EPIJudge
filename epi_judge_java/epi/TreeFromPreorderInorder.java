@@ -19,7 +19,7 @@ public class TreeFromPreorderInorder {
     try {
       int rootIdx = inStart;
       int rightPredStart = preStart;
-      while (inorder.get(rootIdx) != root.data) {
+      while (!inorder.get(rootIdx).equals(root.data)) {
         rootIdx++;
         rightPredStart++;
       }
