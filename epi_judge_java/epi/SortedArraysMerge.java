@@ -9,7 +9,7 @@ public class SortedArraysMerge {
 
   public static List<Integer>
   mergeSortedArrays(List<List<Integer>> sortedArrays) {
-    PriorityQueue<List<Integer>> maxheap = new PriorityQueue(sortedArrays.size(), (Comparator<List<Integer>>) (a, b) -> Integer.compare(b.get(b.size() - 1), a.get(a.size() - 1)));
+    PriorityQueue<List<Integer>> maxheap = new PriorityQueue<>(sortedArrays.size(), (Comparator<List<Integer>>) (a, b) -> Integer.compare(b.get(b.size() - 1), a.get(a.size() - 1)));
 
     for (List<Integer> l : sortedArrays) {
       maxheap.add(l);
