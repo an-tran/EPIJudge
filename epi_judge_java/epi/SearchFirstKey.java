@@ -8,15 +8,24 @@ public class SearchFirstKey {
   @EpiTest(testDataFile = "search_first_key.tsv")
 
   public static int searchFirstOfK(List<Integer> A, int k) {
-    int idx = Collections.binarySearch(A, k);
-    int ret = idx;
-    while (idx >= 0) {
-      List<Integer> subList = A.subList(0, idx);
-      ret = idx;
-      idx = Collections.binarySearch(subList, k);
+    int left = 0, right = A.size() - 1;
+    int middle = left + (right - left)/2;
+    int ret = -1;
+    while (left <= right ) {
+      if (A.get(middle) < k) {
+        left = middle + 1;
+        middle = left + (right - left)/2;
+      } else if (A.get(middle) == k) {
+        right = middle - 1;
+        ret = middle;
+        middle = left + (right - left)/2;
+      } else {
+        right = middle - 1;
+        middle = left + (right - left)/2;
+      }
     }
 
-    return ret < 0 ? -1 : ret;
+    return ret;
   }
 
   public static void main(String[] args) {
