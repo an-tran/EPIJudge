@@ -7,9 +7,18 @@ import java.util.List;
 public class AbsentValueArray {
 
   public static int findMissingElement(Iterable<Integer> stream) {
-    // TODO - you fill in here.
-    return 0;
+    int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
+    long sum = 0;
+    for (Integer n : stream ){
+      sum += n;
+      min = Math.min(min, n);
+      max = Math.max(max, n);
+    }
+    long fullSum = (max - min + 1) * (max + min)/2;
+
+    return (int) (fullSum - sum);
   }
+
   @EpiTest(testDataFile = "absent_value_array.tsv")
   public static void findMissingElementWrapper(List<Integer> stream)
       throws Exception {
