@@ -3,20 +3,41 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 
+import java.util.BitSet;
+import java.util.Iterator;
 import java.util.List;
 public class AbsentValueArray {
+  private static int N_BUCKET = 1 << 16;
 
   public static int findMissingElement(Iterable<Integer> stream) {
-    int min = Integer.MAX_VALUE, max = Integer.MIN_VALUE;
-    long sum = 0;
-    for (Integer n : stream ){
-      sum += n;
-      min = Math.min(min, n);
-      max = Math.max(max, n);
+    int[] buckets = new int[N_BUCKET];
+    Iterator<Integer> it = stream.iterator();
+    while (it.hasNext()) {
+      int bucketIdx = it.next() >>> 16;
+      ++buckets[bucketIdx]; 
     }
-    long fullSum = (max - min + 1) * (max + min)/2;
 
-    return (int) (fullSum - sum);
+    for (int i = 0; i < N_BUCKET; i++) {
+      if (buckets[i] == N_BUCKET) {
+        continue;
+      }
+
+      BitSet bitvec = new BitSet();
+      Iterator<Integer> subit = stream.iterator();
+      while (subit.hasNext()) {
+        int val = subit.next();
+        if (i == (val >>> 16)) {
+          bitvec.set(val & 0xFFFF);
+        }
+      }
+
+      for (int j = 0; j < bitvec.length(); j++) {
+        if (!bitvec.get(j)) {
+          return i << 16 | j;
+        }
+      }
+    }
+    return 0;
   }
 
   @EpiTest(testDataFile = "absent_value_array.tsv")
