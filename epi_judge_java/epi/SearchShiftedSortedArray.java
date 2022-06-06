@@ -10,8 +10,8 @@ public class SearchShiftedSortedArray {
     int middle = A.size()/2;
     int size = A.size();
     int start = 0, end = A.size() - 1;
-    System.out.println("size " + size);
-    if (A.get(0) <= A.get(middle) && A.get(middle) <= A.get(A.size() - 1)) return 0; 
+    // System.out.println("size " + size);
+    // if (A.get(0) <= A.get(middle) && A.get(middle) <= A.get(A.size() - 1)) return 0; 
     while (true) {
       // Ony two element in the [start, end] range;
       // if (start == (end - 1)) return A.get(start) < A.get(end) ? start : end;
@@ -26,7 +26,7 @@ public class SearchShiftedSortedArray {
         return start;
       }
       middle = start + (end - start)/2;
-      System.out.printf("%d %d %d\n", start, middle, end);
+      // System.out.printf("%d %d %d\n", start, middle, end);
     }
   }
 
