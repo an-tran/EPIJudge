@@ -1,4 +1,7 @@
 package epi;
+import java.util.HashMap;
+import java.util.Map;
+
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 public class IsAnonymousLetterConstructible {
@@ -6,7 +9,16 @@ public class IsAnonymousLetterConstructible {
 
   public static boolean isLetterConstructibleFromMagazine(String letterText,
                                                           String magazineText) {
-    // TODO - you fill in here.
+    Map<Character, Integer> charCount = new HashMap<>();
+    for (int i = 0; i < magazineText.length(); i++) {
+      charCount.put(magazineText.charAt(i), charCount.getOrDefault(magazineText.charAt(i), 0) + 1);
+    }
+
+    for (int i = 0 ; i < letterText.length(); i++) {
+      if (!charCount.containsKey(letterText.charAt(i)) || charCount.get(letterText.charAt(i)) == 0) return false;
+      charCount.put(letterText.charAt(i), charCount.get(letterText.charAt(i)) - 1);
+    }
+
     return true;
   }
 
