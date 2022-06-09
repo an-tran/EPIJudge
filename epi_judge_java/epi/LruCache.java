@@ -4,22 +4,102 @@ import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class LruCache {
-  LruCache(final int capacity) {}
-  public Integer lookup(Integer key) {
-    // TODO - you fill in here.
-    return 0;
+  public static class Book {
+    Integer isbn;
+    Integer price;
+
+    public Book(Integer isbn, Integer value) {
+      this.isbn = isbn;
+      this.price = value;
+    }
   }
+
+  public static class BiListNode<T> {
+    public T data;
+    public BiListNode<T> prev;
+    public BiListNode<T> next;
+
+    public BiListNode(T data, BiListNode<T> prev, BiListNode<T> next) {
+      this.data = data;
+      this.prev = prev;
+      this.next = next;
+    }
+  }
+
+  private final int capacity;
+  private Deque<Book> queue = new LinkedList<Book>();
+  private Map<Integer, BiListNode<Book>> map = new HashMap<>();
+  private BiListNode<Book> head = new BiListNode<LruCache.Book>(null, null, null);
+  private BiListNode<Book> tail = new BiListNode<LruCache.Book>(null, null, null);
+  private int size = 0;
+
+  LruCache(final int capacity) {
+     this.capacity = capacity;
+     head.next = tail;
+     tail.prev = head;
+    }
+
+  private void moveNodeToFirst(BiListNode<Book> node) {
+    node.prev.next = node.next;
+    if (node.next != null) {
+      node.next.prev = node.prev;
+    }
+    node.next = head.next;
+    if (head.next != null) {
+      head.next.prev = node;
+    }
+    head.next = node;
+    node.prev = head;
+  }
+
+  public Integer lookup(Integer key) {
+    BiListNode<Book> node = map.get(key);
+    if (node == null) {
+      return -1;
+    }
+
+    moveNodeToFirst(node);
+    return node.data.price;
+  }
+
   public void insert(Integer key, Integer value) {
-    // TODO - you fill in here.
+    if (!map.containsKey(key)) {
+      BiListNode<Book> newnode = new BiListNode<LruCache.Book>(new Book(key, value), null, null);
+      map.put(key, newnode);
+      newnode.next = head.next;
+      if (head.next != null) head.next.prev = newnode;
+      head.next = newnode;
+      newnode.prev = head;
+      size++;
+      if (size > capacity) {
+        erase(tail.prev.data.isbn);
+      }
+    } else {
+      moveNodeToFirst(map.get(key));
+    }
+
+
     return;
   }
   public Boolean erase(Object key) {
-    // TODO - you fill in here.
+    if (size == 0) return false;
+    if (!map.containsKey(key)) return false;
+    BiListNode<Book> remNode = map.remove(key);
+    remNode.prev.next = remNode.next;
+    remNode.next.prev = remNode.prev;
+    remNode.prev = null;
+    remNode.next = null;
+    size--;
     return true;
   }
+  
   @EpiUserType(ctorParams = {String.class, int.class, int.class})
   public static class Op {
     String code;
