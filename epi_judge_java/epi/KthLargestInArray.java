@@ -12,42 +12,30 @@ public class KthLargestInArray {
   @EpiTest(testDataFile = "kth_largest_in_array.tsv")
   public static int findKthLargest(int k, List<Integer> A) {
     Random rand = new Random();
-    int start = 0, end = A.size() - 1;
-    int next = 1;
-    int pivotIdx = rand.nextInt(A.size());
-    while (true) { //TODO: update found
+    int start = 0;
+    int end = A.size() - 1;
+    while (start <= end) {
+      int pivotIdx = start + rand.nextInt(end - start + 1);
       Collections.swap(A, start, pivotIdx);
-      int tail = end;
-      while (next <= tail) {
-        if (A.get(tail) <= A.get(start)) {
-          Collections.swap(A, next, tail);
-          next++;
-        } else {
-          tail--;
+      int nextIdx = start;
+      int i = start + 1;
+      while (i <= end) {
+        if (A.get(i) >= A.get(start)) {
+          Collections.swap(A, i, ++nextIdx);
         }
+        i++;
       }
-      int biggerLen = end - tail;
-      if (biggerLen == k -1) {
-        return A.get(start);
-      } else if (biggerLen > k - 1) {
-        start = next;
-        if (biggerLen == 1) {
-          return A.get(start);
-        }
-        pivotIdx = start + rand.nextInt(biggerLen - 1);
-      } else {
-        k = k - biggerLen - 1;
-        start++;
-        end = tail;
-        if (start >= end) {
-          System.out.println("Invalid state, k = " + k);
-          return A.get(start);
-        }
-        pivotIdx = start + rand.nextInt(end - start);
+      Collections.swap(A, start, nextIdx);
+      if (nextIdx == k - 1) return A.get(nextIdx);
+      if (nextIdx > k - 1) {
+        end = nextIdx - 1;
+      } else  {
+        start = nextIdx + 1;
       }
-      next = start + 1;
-
     }
+
+    // return A.get(start);
+    return -1;
   }
 
 
