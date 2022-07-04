@@ -10,7 +10,10 @@ public class SearchFirstGreaterValueInBst {
     // return findHelper(tree, k, null);
 
     // Method 2: no loop
+<<<<<<< HEAD
     // Binary search tree & keep state
+=======
+>>>>>>> 5e989ee875d943d895316b3c4676e714600e61c7
     BstNode<Integer> ret = null;
     BstNode<Integer> next = tree;
     while (next != null) {
