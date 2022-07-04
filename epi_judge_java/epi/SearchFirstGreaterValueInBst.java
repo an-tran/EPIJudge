@@ -6,7 +6,23 @@ public class SearchFirstGreaterValueInBst {
 
   public static BstNode<Integer> findFirstGreaterThanK(BstNode<Integer> tree,
                                                        Integer k) {
-    return findHelper(tree, k, null);
+    // Method 1: using recursive
+    // return findHelper(tree, k, null);
+
+    // Method 2: no loop
+    // Binary search tree & keep state
+    BstNode<Integer> ret = null;
+    BstNode<Integer> next = tree;
+    while (next != null) {
+      if (next.data <= k) {
+        next = next.right;
+      } else { // tree.data > k
+        if (ret == null) ret = next;
+        else ret = ret.data <= next.data ? ret : next;
+        next = next.left;
+      }
+    }
+    return ret;
   }
 
   private static BstNode<Integer> findHelper(BstNode<Integer> tree, Integer k, BstNode<Integer> greaterThanK) {
