@@ -10,7 +10,12 @@ public class LowestCommonAncestorInBst {
   // b.
   public static BstNode<Integer>
   findLca(BstNode<Integer> tree, BstNode<Integer> s, BstNode<Integer> b) {
-    // TODO - you fill in here.
+    BstNode<Integer> itor = tree;
+    while (itor != null) {
+      if (itor.data >= s.data && itor.data <= b.data) return itor;
+      if (itor.data > s.data && itor.data > b.data) itor = itor.left;
+      if (itor.data < s.data && itor.data < b.data) itor = itor.right;
+    }
     return null;
   }
   @EpiTest(testDataFile = "lowest_common_ancestor_in_bst.tsv")
